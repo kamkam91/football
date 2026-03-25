@@ -4,7 +4,13 @@ declare(strict_types=1);
 
 namespace App;
 
-//TODO: Move the logic from this class to the Repository class. The Manager name is not appropriate for any class
+use App\Application\Service\Repository\StatisticRepositoryInterface;
+//
+
+/**
+ * @deprecated Use StatisticRepositoryInterface implementation.
+ * @deprecated Move the logic from this class to the Repository class. The Manager name is not appropriate for any class
+ */
 class StatisticsManager
 {
 

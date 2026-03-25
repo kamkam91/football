@@ -28,8 +28,8 @@ class FileAdapter implements StoreAdapterInterface
         return json_decode($content, true) ?? [];
     }
 
-    public function save()
+    public function save(array $data): void
     {
-
+        // TODO implement save method
     }
 }

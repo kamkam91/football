@@ -6,5 +6,7 @@ namespace App\Infrastructure\StoreAdapter;
 
 interface StoreAdapterInterface
 {
+    public function getAll(): array;
 
+    public function save(array $data): void;
 }
