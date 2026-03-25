@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\UI\Rest;
 
-use App\Application\Command\KeepEventAndCalculateStatisticHandler;
-use App\Application\Command\KeepEventAndCalculateStatisticMessage;
+use App\Application\Command\KeepEventAndCalculateStatistic\KeepEventAndCalculateStatisticHandler;
+use App\Application\Command\KeepEventAndCalculateStatistic\KeepEventAndCalculateStatisticMessage;
 use App\Application\Model\Event\Event;
 use App\Application\Model\Event\EventTypeEnum;
 use App\Infrastructure\Router\JsonResponse;
