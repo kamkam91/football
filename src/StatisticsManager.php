@@ -1,26 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App;
 
+//TODO: Move the logic from this class to the Repository class. The Manager name is not appropriate for any class
 class StatisticsManager
 {
-    private FileStorage $storage;
-    private string $statsFile;
-    
-    public function __construct(string $statsFile = '../storage/statistics.txt')
+
+    public function __construct(private string $statsFile = '../storage/statistics.txt')
     {
-        $this->storage = new FileStorage($statsFile);
-        $this->statsFile = $statsFile;
-        
-        $directory = dirname($statsFile);
+        $directory = dirname($this->statsFile);
         if (!is_dir($directory)) {
             mkdir($directory, 0777, true);
+        }
+
+        if (false === file_exists($this->statsFile)) {
+            file_put_contents($this->statsFile, '');
         }
     }
     
     public function updateTeamStatistics(string $matchId, string $teamId, string $statType, int $value = 1): void
     {
-        $stats = $this->getStatistics();
+        $stats = $this->getStatistic();
         
         if (!isset($stats[$matchId])) {
             $stats[$matchId] = [];
@@ -38,27 +40,10 @@ class StatisticsManager
         
         $this->saveStatistics($stats);
     }
-    
-    public function getTeamStatistics(string $matchId, string $teamId): array
+
+    private function getStatistic(): array
     {
-        $stats = $this->getStatistics();
-        return $stats[$matchId][$teamId] ?? [];
-    }
-    
-    public function getMatchStatistics(string $matchId): array
-    {
-        $stats = $this->getStatistics();
-        return $stats[$matchId] ?? [];
-    }
-    
-    private function getStatistics(): array
-    {
-        if (!file_exists($this->statsFile)) {
-            return [];
-        }
-        
-        $content = file_get_contents($this->statsFile);
-        return json_decode($content, true) ?? [];
+        return json_decode(file_get_contents($this->statsFile), true) ?? [];
     }
     
     private function saveStatistics(array $stats): void

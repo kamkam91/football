@@ -22,6 +22,10 @@ final readonly class EventMatcher implements RouterMatcherInterface
             return JsonResponse::Error(['error' => 'Invalid JSON']);
         }
 
+        if (!isset($data['type'])) {
+            return JsonResponse::Error(['error' => 'Event type is required']);
+        }
+
         return new AddEvent()->__invoke($data);
     }
 }

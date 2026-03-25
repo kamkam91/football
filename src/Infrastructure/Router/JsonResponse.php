@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Router;
 
-class JsonResponse implements ResponseInterface
+final readonly class JsonResponse implements ResponseInterface
 {
     private function __construct(
         public int $statusCode,

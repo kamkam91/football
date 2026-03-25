@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Application\Model\Event\Event;
+use App\Application\Model\Event\EventTypeEnum;
+
 class EventHandler
 {
     private FileStorage $storage;
@@ -13,37 +16,28 @@ class EventHandler
         $this->statisticsManager = $statisticsManager ?? new StatisticsManager(__DIR__ . '/../storage/statistics.txt');
     }
     
-    public function handleEvent(array $data): array
+    public function handleEvent(Event $event): array
     {
-        if (!isset($data['type'])) {
-            throw new \InvalidArgumentException('Event type is required');
-        }
-        
-        $event = [
-            'type' => $data['type'],
-            'timestamp' => time(),
-            'data' => $data
-        ];
-        
-        $this->storage->save($event);
-        
+
+        $this->storage->save($event->toArray());
+
         // Update statistics for foul events
-        if ($data['type'] === 'foul') {
-            if (!isset($data['match_id']) || !isset($data['team_id'])) {
+        if ($event->type === EventTypeEnum::FOUL) {
+            if (null === $event->data->matchId || null === $event->data->teamId) {
                 throw new \InvalidArgumentException('match_id and team_id are required for foul events');
             }
             
             $this->statisticsManager->updateTeamStatistics(
-                $data['match_id'],
-                $data['team_id'],
-                'fouls'
+                $event->data->matchId,
+                $event->data->teamId,
+                $event->type->getStatisticType()
             );
         }
         
         return [
             'status' => 'success',
             'message' => 'Event saved successfully',
-            'event' => $event
+            'event' => $event->toArray()
         ];
     }
 }

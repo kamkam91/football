@@ -38,7 +38,6 @@ class StatisticsApiCest
         
         // Now get team statistics
         $I->sendGET('/statistics?match_id=m1&team_id=arsenal');
-        
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([

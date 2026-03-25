@@ -6,7 +6,7 @@ namespace App\Infrastructure\Router;
 
 use App\Infrastructure\Router\Matcher\RouterMatcherInterface;
 
-class RouterResolver
+final readonly class RouterResolver
 {
     /**
      * @param iterable|RouterMatcherInterface[] $routes
